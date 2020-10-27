@@ -1,5 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongodb = require('mongodb');
+
+(async () => {
+
+const connectionString = 'mongodb://localhost:27017';
+
+console.info('Conectando ao banco de dados MongoDB...');
+
+const options = {
+    useUnifiedTopology: true
+};
+
+const client = await mongodb.MongoClient.connect(connectionString, options);
+
+console.info('MongoDB conectado com sucesso!');
+
+console.log(client);
+
 const app = express();
 
 const port = 3000;
@@ -102,3 +120,5 @@ app.delete('/mensagem/:id', function (req, res) {
 app.listen(port, function () {
     console.info('App rodando em http://localhost:' + port);
 });
+
+})();
