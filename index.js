@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongodb = require('mongodb');
+const ObjectId = mongodb.ObjectId;
 
 (async () => {
 
@@ -83,10 +84,10 @@ app.post('/mensagem', async function (req, res) {
 });
 
 // Read Single
-app.get('/mensagem/:id', function (req, res) {
+app.get('/mensagem/:id', async function (req, res) {
     const id = req.params.id;
 
-    const mensagem = mensagens[id - 1];
+    const mensagem = await mensagens.findOne({ _id: ObjectId(id) });
 
     res.send(mensagem);
 });
