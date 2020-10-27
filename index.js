@@ -93,20 +93,27 @@ app.get('/mensagem/:id', async function (req, res) {
 });
 
 // Update
-app.put('/mensagem/:id', function (req, res) {
+app.put('/mensagem/:id', async function (req, res) {
     const id = req.params.id;
-    const texto = req.body.texto;
 
-    mensagens[id - 1].texto = texto;
+    const mensagem = {
+        _id: ObjectId(id),
+        ...req.body
+    };
 
-    res.send(mensagens[id - 1]);
+    await mensagens.updateOne(
+        { _id: ObjectId(id) },
+        { $set: mensagem }
+    );
+
+    res.send(mensagem);
 });
 
 // Delete
-app.delete('/mensagem/:id', function (req, res) {
+app.delete('/mensagem/:id', async function (req, res) {
     const id = req.params.id;
 
-    delete mensagens[id - 1];
+    await mensagens.deleteOne({ _id: ObjectId(id) });
 
     res.send(`A mensagem de ID ${id} foi removida com sucesso.`);
 });
