@@ -16,8 +16,6 @@ const client = await mongodb.MongoClient.connect(connectionString, options);
 
 console.info('MongoDB conectado com sucesso!');
 
-console.log(client);
-
 const app = express();
 
 const port = 3000;
@@ -59,34 +57,29 @@ app.get('/', function (req, res) {
   res.send('Hello World');
 });
 
-const mensagens = [
-    {
-        id: 1,
-        texto: 'Essa é uma mensagem'
-    },
-    {
-        id: 2,
-        texto: 'Essa é outra mensagem'
-    }
-];
+const db = client.db('ocean_backend_27_10_2020');
+const mensagens = db.collection('mensagens');
 
-// Read All
-app.get('/mensagem', function (req, res) {
-    res.send(mensagens.filter(Boolean));
+// Read all
+app.get('/mensagem', async function (req, res) {
+    const findResult = await mensagens.find().toArray();
+
+    res.send(findResult);
 });
 
 // Create
-app.post('/mensagem', function (req, res) {
+app.post('/mensagem', async function (req, res) {
     const texto = req.body.texto;
 
     const mensagem = {
-        'id': mensagens.length + 1,
         'texto': texto
     };
 
-    mensagens.push(mensagem);
+    const resultado = await mensagens.insertOne(mensagem);
 
-    res.send(mensagem);
+    const objetoInserido = resultado.ops[0];
+
+    res.send(objetoInserido);
 });
 
 // Read Single
