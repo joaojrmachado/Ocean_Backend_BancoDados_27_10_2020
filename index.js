@@ -72,7 +72,7 @@ app.post('/mensagem', async function (req, res) {
     const texto = req.body.texto;
 
     const mensagem = {
-        'texto': texto
+        texto
     };
 
     const resultado = await mensagens.insertOne(mensagem);
