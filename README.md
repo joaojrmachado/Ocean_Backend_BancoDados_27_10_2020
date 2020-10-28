@@ -52,7 +52,7 @@ SELECT * FROM `mensagens`;
 SELECT * FROM `mensagens` WHERE `mensagens`.`id` = 1;
 ```
 
-**Exemplo de query para consulta de registros:**
+**Exemplo de query para atualização de registros:**
 
 ```mariadb
 UPDATE `mensagens` SET `texto` = 'Essa é uma mensagem com o texto editado' WHERE `mensagens`.`id` = 1;
@@ -62,6 +62,55 @@ UPDATE `mensagens` SET `texto` = 'Essa é uma mensagem com o texto editado' WHER
 
 ```mariadb
 DELETE FROM `mensagens` WHERE `mensagens`.`id` = 1;
+```
+
+## Exemplo de collection (o mesmo que tabela) no MongoDB
+
+As `collections` podem ter QUALQUER estrutura, desde que os registros dela estejam no formato `JSON`.
+
+Então na prática, o que o MongoDB armazena são documentos em `JSON`.
+
+## Conectando NodeJS e MongoDB
+
+No projeto de NodeJS, precisamos de uma biblioteca que consegue falar com o MongoDB.
+
+É muito comum ver tutoriais na internet que utilizam o Mongoose.
+
+Porém, o Mongoose não é a implementação oficial do MongoDB, e sim o próprio driver chamado MongoDB.
+
+Mongoose tem algumas validações de `schema` e um certo padrão para construir as `collections`.
+
+**Exemplo de query para criação de registro:**
+
+```javascript
+await mensagens.insertOne(mensagem);
+```
+
+**Exemplo de query para visualização de registros:**
+
+```javascript
+await collection.find().toArray()
+```
+
+**Exemplo de query para visualizar apenas um registro:**
+
+```javascript
+await mensagens.findOne({ _id: ObjectId(id) });
+```
+
+**Exemplo de query para atualização de registros:**
+
+```javascript
+await mensagens.updateOne(
+    { _id: ObjectId(id) },
+    { $set: mensagem }
+);
+```
+
+**Exemplo de query para remoção de registros:**
+
+```javascript
+await mensagens.deleteOne({ _id: ObjectId(id) });
 ```
 
 # Instalação e configuração do projeto
